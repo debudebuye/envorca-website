@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Envorca — Linux development on Windows just works.</title>
+  <meta name="description" content="Envorca is a Windows-first developer infrastructure daemon for WSL2 and Docker. It diagnoses, explains, and repairs your Linux development environment — no admin rights required.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav__brand" href="#">
+      <span class="nav__mark" aria-hidden="true"></span>
+      <span class="nav__name">ENVORCA</span>
+    </a>
+    <div class="nav__links">
+      <a href="#what">What it does</a>
+      <a href="#install">Install</a>
+      <a href="#usage">Usage</a>
+      <a href="#requirements">Requirements</a>
+    </div>
+    <a class="btn btn--primary nav__cta" href="#download">Download</a>
+  </nav>
+
+  <header class="hero">
+    <img src="assets/banner.svg" alt="Envorca — Linux development on Windows just works" class="hero__banner" width="900" height="300">
+    <h1>Linux development on Windows <span class="accent">just works.</span></h1>
+    <p class="hero__sub">
+      Envorca is a lightweight local daemon that manages WSL2 and Docker behind Windows dev workflows —
+      it watches your environment, explains what broke in plain language, and fixes it safely.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" id="download" href="https://github.com/debudebuye/envorca/releases/download/nightly/envorca-windows-amd64.zip">Download for Windows</a>
+      <a class="btn btn--ghost" href="https://github.com/debudebuye/envorca">View on GitHub</a>
+    </div>
+    <p class="hero__meta">Windows 10/11 · WSL2 · Docker · Free &amp; open source · No admin rights</p>
+  </header>
+
+  <main>
+    <section id="what" class="section">
+      <h2>What Envorca does</h2>
+      <p class="lead">WSL2 is powerful but fragile. Distributions silently die, Docker stops answering, and virtualization breaks after a Windows update. Envorca handles the diagnostics and the recovery so you can focus on code.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>Detects</h3>
+          <p>Seven health probes cover the entire stack: daemon health, Windows OS, virtualization firmware and services, WSL lifecycle, Linux kernel version, system memory, and the Docker container runtime.</p>
+        </article>
+        <article class="card">
+          <h3>Explains</h3>
+          <p>Every probe reports what is wrong, why it matters, and Envorca's recommendation — in plain language. No cryptic WSL error dumps.</p>
+        </article>
+        <article class="card">
+          <h3>Fixes</h3>
+          <p>Recovery follows a <code>diagnose → propose → confirm → execute → verify</code> flow. Destructive actions always require your explicit confirmation.</p>
+        </article>
+        <article class="card">
+          <h3>Remembers</h3>
+          <p>Diagnostic snapshots and repair outcomes are recorded in a local SQLite database with bounded retention, so history is always available.</p>
+        </article>
+        <article class="card">
+          <h3>Streams</h3>
+          <p>A real-time event bus surfaces daemon activity as it happens, with a replay buffer so you never miss startup or repair events.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="install" class="section">
+      <h2>Install</h2>
+      <ol class="steps">
+        <li>
+          <strong>Download the zip</strong>
+          <p>Grab <code>envorca-windows-amd64.zip</code> from the latest <a href="https://github.com/debudebuye/envorca/releases">release</a> (the "nightly" build refreshes on every push to <code>main</code>).</p>
+        </li>
+        <li>
+          <strong>Unzip it</strong>
+          <p>Keep <code>envorca.exe</code> and <code>envorcad.exe</code> in the same folder — the CLI locates the daemon next to it.</p>
+        </li>
+        <li>
+          <strong>Start the daemon</strong>
+          <p>Open PowerShell in that folder and run <code>envorca.exe start</code>. The daemon launches detached over a local named pipe — no admin rights, no TCP, no installation.</p>
+        </li>
+      </ol>
+      <div class="note">
+        <strong>Tip:</strong> optionally add the folder to your PATH once:
+        <pre><code>[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\path\to\envorca", "User")</code></pre>
+        Then just run <code>envorca</code> from any terminal.
+      </div>
+    </section>
+
+    <section id="usage" class="section">
+      <h2>Use it</h2>
+      <div class="terminal" role="img" aria-label="Example Envorca commands">
+<pre><code>$ envorca.exe start    <span class="cmt">launch the daemon in the background</span>
+$ envorca.exe doctor    <span class="cmt">diagnose the whole WSL2 + Docker stack</span>
+$ envorca.exe repair    <span class="cmt">propose and apply safe fixes</span>
+$ envorca.exe status    <span class="cmt">quick overall health overview</span>
+$ envorca.exe events    <span class="cmt">stream daemon events in real time</span>
+$ envorca.exe history   <span class="cmt">view past diagnostics and repairs</span>
+$ envorca.exe stop      <span class="cmt">shut the daemon down</span></code></pre>
+      </div>
+      <table class="commands">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>envorca start</code></td><td>Start the Envorca daemon (detached background process)</td></tr>
+          <tr><td><code>envorca stop</code></td><td>Gracefully shut the daemon down</td></tr>
+          <tr><td><code>envorca status</code></td><td>Daemon state, overall health, per-component summary</td></tr>
+          <tr><td><code>envorca doctor</code></td><td>Detailed diagnosis: what's wrong, why, how to fix it</td></tr>
+          <tr><td><code>envorca repair [--yes]</code></td><td>Propose and apply safe, deterministic repair actions</td></tr>
+          <tr><td><code>envorca events [--replay]</code></td><td>Stream daemon events (startup, repairs, lifecycle)</td></tr>
+          <tr><td><code>envorca history [--limit N]</code></td><td>Recorded diagnostic snapshots and repair outcomes</td></tr>
+          <tr><td><code>envorca ping</code></td><td>Check daemon liveness and version</td></tr>
+          <tr><td><code>envorca version</code></td><td>Print the CLI version</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <strong>Pro tip:</strong> run your container workloads from the <em>default</em> WSL distribution (e.g. <code>wsl --set-default Ubuntu-24.04</code>).
+        Capability acknowledged, Envorca's <code>container_runtime</code> probe looks for a Docker CLI inside that distro. If you use Docker Desktop, enable WSL integration for your distro in its settings.
+      </div>
+    </section>
+
+    <section id="requirements" class="section">
+      <h2>Requirements</h2>
+      <ul class="list">
+        <li><strong>Windows 10/11</strong> with WSL2 enabled — <code>wsl --install -d Ubuntu</code> from an elevated shell, then reboot.</li>
+        <li><strong>A Linux distribution</strong> as your WSL default (a real user distro, not Docker Desktop's internal one).</li>
+        <li><strong>Docker</strong> — optional: Docker Desktop with WSL integration, or a Docker CLI installed inside the distro.</li>
+        <li><strong>No admin rights, no Go runtime</strong> — Envorca ships as two ready-to-run binaries.</li>
+      </ul>
+      <div class="note">
+        <strong>Health probes:</strong> daemon · windows · virtualization · wsl · linux_kernel · resources · container_runtime.
+      </div>
+    </section>
+
+    <section id="how" class="section">
+      <h2>How it works</h2>
+      <p>Envorca uses a <strong>daemon + thin client</strong> architecture. The CLI (a thin Cobra client) dials the daemon over local IPC — a named pipe on Windows — and renders responses. All infrastructure logic lives in the daemon: it talks to WSL2 via <code>wsl.exe</code> argument slices (never shell strings) and to containers through a runtime-driver interface. Communications never leave your machine and nothing listens on TCP.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Open source under the <a href="https://github.com/debudebuye/envorca/blob/main/LICENSE">Apache License 2.0</a> · <a href="https://github.com/debudebuye/envorca">GitHub</a></p>
+    <p class="footer__mono">Powerful infrastructure underneath. Simple experience on top.</p>
+  </footer>
+</body>
+</html>
