@@ -1,13 +1,26 @@
 # Envorca Website
 
-Marketing / download site for [Envorca](https://github.com/debudebuye/envorca) — Linux development on Windows just works.
+Next.js marketing / download site for [Envorca](https://github.com/debudebuye/envorca) — Linux development on Windows just works.
 
-## Contents
+## Stack
 
-- `index.html` — single-page site (hero, features, install, usage, requirements)
-- `styles.css` — dark developer-infrastructure theme (navy + cyan, matches the brand)
-- `assets/banner.svg` — the Envorca logo banner
-- `favicon.svg` — site favicon
+- **Next.js 15** (App Router) + **React 19**
+- TypeScript
+- Static HTML/CSS (no runtime deps, no data fetching)
+
+## Getting started
+
+```sh
+npm install
+npm run dev      # http://localhost:3000
+```
+
+Production build:
+
+```sh
+npm run build
+npm run start
+```
 
 ## Download link
 
@@ -19,10 +32,17 @@ https://github.com/debudebuye/envorca/releases/download/nightly/envorca-windows-
 
 This zip is rebuilt on every push to `main` of the [envorca](https://github.com/debudebuye/envorca) repo, so the link always serves the latest binaries.
 
-## Structure
+## Layout
 
-Static HTML/CSS — no build step, no dependencies. Open `index.html` in a browser or serve it with any static file server:
-
-```sh
-python -m http.server 8080
+```
+app/
+  layout.tsx       root layout + SEO metadata + theme script (FOUC guard)
+  page.tsx         single-page site (hero, terminal demo, features, install, usage)
+  globals.css      theme system: dark (default) + light, navy/cyan dev-tool theme
+  ThemeProvider.tsx  light/dark context — honors prefers-color-scheme, persists in localStorage
+  ThemeToggle.tsx    sun/moon toggle in the nav
+  InstallSnippet.tsx install command block with a copy button
+public/
+  banner.svg      the Envorca logo banner
+  favicon.svg     site favicon
 ```
