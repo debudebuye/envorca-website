@@ -223,11 +223,13 @@ pre {
 
 .cursor {
   display: inline-block;
-  width: 0.55em;
-  height: 0.8em;
+  width: 2px;
+  height: 0.75em;
   background: var(--accent);
-  vertical-align: baseline;
+  vertical-align: text-bottom;
   margin-left: 10px;
+  margin-bottom: 20px;
+  border-radius: 1px;
   animation: blink 1.1s steps(1) infinite;
 }
 
