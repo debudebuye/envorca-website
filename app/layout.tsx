@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   title: "Envorca — Linux development on Windows just works.",
   description:
     "Envorca is a Windows-first developer infrastructure daemon for WSL2 and Docker. It diagnoses, explains, and repairs your Linux development environment — no admin rights required.",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: "/envorca-website/favicon.svg" },
   openGraph: {
     title: "Envorca — Linux development on Windows just works.",
     description:
       "A lightweight local daemon that manages WSL2 and Docker behind Windows dev workflows.",
-    images: ["/banner.svg"],
+    images: ["/envorca-website/banner.svg"],
   },
 };
 
