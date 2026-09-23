@@ -339,12 +339,18 @@ pre {
 }
 
 /* ---- Codeblock (install snippet) ---- */
+.codeblocks {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
 .codeblock {
   background: var(--terminal-bg);
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
-  margin: 0 0 26px;
+  margin: 0;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
 
